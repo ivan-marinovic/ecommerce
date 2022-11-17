@@ -23,6 +23,18 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-   //updateCategory
 
+    public void updateCategory(Long categoryId, Category updatedCategory) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                ()-> new IllegalStateException("category with id " + categoryId + "does not exist"));
+        category.setCategoryName(updatedCategory.getCategoryName());
+        category.setDescription(updatedCategory.getDescription());
+        category.setImageUrl(updatedCategory.getImageUrl());
+        categoryRepository.save(category);
+    }
+
+
+    public boolean isExists(Long categoryId) {
+        return categoryRepository.findById(categoryId).isPresent();
+    }
 }

@@ -18,7 +18,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("all")
+    @GetMapping(path = "all")
     public List<Category> getCategories(Category category) {
         return categoryService.getCategories(category);
     }
@@ -29,5 +29,12 @@ public class CategoryController {
          return new ResponseEntity<>(new ApiResponse(true, "new category created"),HttpStatus.CREATED);
     }
 
-    //categoryUpdate
+    @PutMapping(path = "{categoryId}")
+    public ResponseEntity<ApiResponse> updateCategory(@PathVariable("categoryId") Long categoryId,@RequestBody Category category) {
+        if(!categoryService.isExists(categoryId)) {
+            return new ResponseEntity<>(new ApiResponse(false, "category does not exists"), HttpStatus.NOT_FOUND);
+        }
+        categoryService.updateCategory(categoryId, category);
+        return new ResponseEntity<>(new ApiResponse(true, "category has been updated"), HttpStatus.OK);
+    }
 }
