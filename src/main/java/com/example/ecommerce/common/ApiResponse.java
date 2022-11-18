@@ -1,6 +1,9 @@
 package com.example.ecommerce.common;
 
+import com.example.ecommerce.dto.ProductDto;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ApiResponse {
     private final boolean success;
