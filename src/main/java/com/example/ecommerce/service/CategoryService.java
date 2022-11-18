@@ -33,7 +33,6 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-
     public boolean isExists(Long categoryId) {
         return categoryRepository.findById(categoryId).isPresent();
     }
