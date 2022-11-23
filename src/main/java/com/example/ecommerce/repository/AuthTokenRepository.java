@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AuthTokenRepository extends JpaRepository<AuthenticationToken, Long> {
     AuthenticationToken findByUser(User user);
+
+    AuthenticationToken findByToken(String token);
 }
