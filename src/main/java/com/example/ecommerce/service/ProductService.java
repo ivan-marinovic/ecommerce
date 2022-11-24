@@ -1,6 +1,7 @@
 package com.example.ecommerce.service;
 
 import com.example.ecommerce.dto.ProductDto;
+import com.example.ecommerce.exception.ProductNotExistsException;
 import com.example.ecommerce.model.Category;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.repository.ProductRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.PropertyPermission;
 
 @Service
 public class ProductService {
@@ -59,4 +61,13 @@ public class ProductService {
         productDto.setDescription(product.getDescription());
         productRepository.save(product);
     }
+
+    public Product findById(Long productId) throws ProductNotExistsException {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if(optionalProduct.isEmpty()) {
+            throw new ProductNotExistsException("product does not exist " + productId);
+        }
+        return optionalProduct.get();
+    }
+
 }
