@@ -21,4 +21,9 @@ public class ExceptionControllerAdvice {
     public final ResponseEntity<String> handleProductNotExistsException(ProductNotExistsException productNotExistsException) {
         return new ResponseEntity<>(productNotExistsException.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = OrderNotFoundException.class)
+    public final ResponseEntity<String> handleOrderNotFoundException(OrderNotFoundException orderNotFoundException) {
+        return new ResponseEntity<>(orderNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

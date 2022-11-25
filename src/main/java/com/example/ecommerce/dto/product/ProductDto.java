@@ -1,4 +1,4 @@
-package com.example.ecommerce.dto;
+package com.example.ecommerce.dto.product;
 
 import javax.validation.constraints.NotNull;
 
@@ -6,7 +6,7 @@ public class ProductDto {
 
     private Long id;
     private @NotNull String name;
-    private @NotNull Float price;
+    private Double price;
     private @NotNull String imageUrl;
     private @NotNull String description;
     private @NotNull Long categoryId;
@@ -22,11 +22,11 @@ public class ProductDto {
         this.name = name;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

@@ -1,12 +1,10 @@
 package com.example.ecommerce.controller;
 
 import com.example.ecommerce.common.ApiResponse;
-import com.example.ecommerce.dto.ProductDto;
+import com.example.ecommerce.dto.product.ProductDto;
 import com.example.ecommerce.model.Category;
-import com.example.ecommerce.model.Product;
 import com.example.ecommerce.repository.CategoryRepository;
 import com.example.ecommerce.service.ProductService;
-import io.swagger.annotations.Api;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

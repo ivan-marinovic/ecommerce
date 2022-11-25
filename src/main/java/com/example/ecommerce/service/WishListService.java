@@ -1,10 +1,9 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.dto.ProductDto;
+import com.example.ecommerce.dto.product.ProductDto;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.model.WishList;
 import com.example.ecommerce.repository.WishListRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
