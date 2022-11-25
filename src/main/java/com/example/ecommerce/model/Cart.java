@@ -15,11 +15,11 @@ public class Cart {
     @JoinColumn(name = "productId")
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "userId")
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-    private int quantity;
+    private Integer quantity;
 
     public Cart() {
     }

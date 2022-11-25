@@ -1,6 +1,6 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.dto.ProductDto;
+import com.example.ecommerce.dto.product.ProductDto;
 import com.example.ecommerce.exception.ProductNotExistsException;
 import com.example.ecommerce.model.Category;
 import com.example.ecommerce.model.Product;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.PropertyPermission;
 
 @Service
 public class ProductService {

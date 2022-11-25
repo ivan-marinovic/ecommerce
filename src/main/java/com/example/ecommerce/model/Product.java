@@ -2,6 +2,7 @@ package com.example.ecommerce.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -11,8 +12,7 @@ public class Product {
     private Long productId;
     @NotNull
     private String name;
-    @NotNull
-    private Float price;
+    private Double price;
     @NotNull
     private String imageUrl;
     @NotNull
@@ -21,6 +21,13 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "categoryId")
     Category category;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private List<WishList> wishListList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private List<Cart> carts;
+
 
     public Long getProductId() {
         return productId;
@@ -38,11 +45,11 @@ public class Product {
         this.name = name;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
