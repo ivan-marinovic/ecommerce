@@ -48,8 +48,6 @@ public class ProductController {
         return new ResponseEntity<>(new ApiResponse(true, "product has been created"),HttpStatus.CREATED);
     }
 
-
-    //ne radi update
     @PutMapping(path = "{productId}")
     public ResponseEntity<ApiResponse> updateProduct(@PathVariable("productId") Long productId,@RequestBody ProductDto productDto) throws Exception {
         Optional<Category>optionalCategory = categoryRepository.findById(productDto.getCategoryId());

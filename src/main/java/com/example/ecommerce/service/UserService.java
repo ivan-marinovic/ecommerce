@@ -99,9 +99,9 @@ public class UserService {
             throw new Exception("user does not exists");
         }
         User user = optionalUser.get();
-        userUpdateDto.setFirstName(user.getFirstName());
-        userUpdateDto.setLastName(user.getLastName());
-        userUpdateDto.setRole(user.getRole());
+        user.setFirstName(userUpdateDto.getFirstName());
+        user.setLastName(userUpdateDto.getLastName());
+        user.setRole(userUpdateDto.getRole());
         userRepository.save(user);
     }
 

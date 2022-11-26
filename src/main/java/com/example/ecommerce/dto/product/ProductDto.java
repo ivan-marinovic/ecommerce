@@ -11,7 +11,17 @@ public class ProductDto {
     private @NotNull String description;
     private @NotNull Long categoryId;
 
+    private Integer quantity;
+
     public ProductDto() {
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public String getName() {
