@@ -2,8 +2,11 @@ package com.example.ecommerce.controller;
 
 import com.example.ecommerce.common.ApiResponse;
 import com.example.ecommerce.dto.product.ProductDto;
+import com.example.ecommerce.enums.Role;
 import com.example.ecommerce.model.Category;
+import com.example.ecommerce.model.User;
 import com.example.ecommerce.repository.CategoryRepository;
+import com.example.ecommerce.service.AuthenticationService;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +21,11 @@ public class ProductController {
 
     private final ProductService productService;
     private final CategoryRepository categoryRepository;
-    public ProductController(ProductService productService, CategoryRepository categoryRepository) {
+    private final AuthenticationService authenticationService;
+    public ProductController(ProductService productService, CategoryRepository categoryRepository,AuthenticationService authenticationService) {
         this.productService = productService;
         this.categoryRepository = categoryRepository;
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping(path = "all")
@@ -30,7 +35,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createProduct(@RequestBody ProductDto productDto) {
+    public ResponseEntity<ApiResponse> createProduct(@RequestParam("token") String token, @RequestBody ProductDto productDto) {
+        authenticationService.authenticate(token);
+        User user = authenticationService.getUser(token);
+        if(!user.getRole().equals(Role.admin)){
+            return new ResponseEntity<>(new ApiResponse(false, "access denied"), HttpStatus.FORBIDDEN);
+        }
         Optional<Category> optionalCategory = categoryRepository.findById(productDto.getCategoryId());
         if(!optionalCategory.isPresent()) {
             return new ResponseEntity<>(new ApiResponse(false, "category does not exists"), HttpStatus.BAD_REQUEST);
