@@ -1,4 +1,4 @@
-package com.example.ecommerce.config;
+package com.example.ecommerce.config.documentation;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
