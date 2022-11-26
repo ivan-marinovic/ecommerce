@@ -2,6 +2,7 @@ package com.example.ecommerce.controller;
 
 import com.example.ecommerce.common.ApiResponse;
 import com.example.ecommerce.model.Category;
+import com.example.ecommerce.service.AuthenticationService;
 import com.example.ecommerce.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,10 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    public CategoryController(CategoryService categoryService) {
+    private final AuthenticationService authenticationService;
+    public CategoryController(CategoryService categoryService, AuthenticationService authenticationService) {
         this.categoryService = categoryService;
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping(path = "all")
@@ -24,7 +27,11 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createCategory(@RequestBody Category category) {
+    public ResponseEntity<ApiResponse> createCategory(@RequestParam("token") String token, @RequestBody Category category) {
+         authenticationService.authenticate(token);
+         if(!authenticationService.isAuthorized(token)) {
+             return new ResponseEntity<>(new ApiResponse(true, "access denied"),HttpStatus.FORBIDDEN);
+         }
          categoryService.createCategory(category);
          return new ResponseEntity<>(new ApiResponse(true, "new category created"),HttpStatus.CREATED);
     }

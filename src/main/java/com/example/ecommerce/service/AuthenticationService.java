@@ -1,6 +1,7 @@
 package com.example.ecommerce.service;
 
 import antlr.Token;
+import com.example.ecommerce.enums.Role;
 import com.example.ecommerce.exception.AuthenticationFailException;
 import com.example.ecommerce.model.AuthenticationToken;
 import com.example.ecommerce.model.User;
@@ -41,5 +42,14 @@ public class AuthenticationService {
         if(Objects.isNull(getUser(token))) {
             throw new AuthenticationFailException("token not valid");
         }
+    }
+
+    public boolean isAuthorized(String token) {
+        User user = getUser(token);
+        Role role = user.getRole();
+        if(role == Role.admin) {
+            return true;
+        }
+        return false;
     }
 }

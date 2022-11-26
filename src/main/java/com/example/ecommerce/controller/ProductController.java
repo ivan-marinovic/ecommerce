@@ -37,8 +37,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ApiResponse> createProduct(@RequestParam("token") String token, @RequestBody ProductDto productDto) {
         authenticationService.authenticate(token);
-        User user = authenticationService.getUser(token);
-        if(!user.getRole().equals(Role.admin)){
+        if(!authenticationService.isAuthorized(token)){
             return new ResponseEntity<>(new ApiResponse(false, "access denied"), HttpStatus.FORBIDDEN);
         }
         Optional<Category> optionalCategory = categoryRepository.findById(productDto.getCategoryId());
