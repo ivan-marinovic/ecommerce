@@ -18,6 +18,8 @@ public class Product {
     @NotNull
     private String description;
 
+    private Integer quantity;
+
     @ManyToOne
     @JoinColumn(name = "categoryId")
     Category category;
@@ -75,5 +77,29 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public List<WishList> getWishListList() {
+        return wishListList;
+    }
+
+    public void setWishListList(List<WishList> wishListList) {
+        this.wishListList = wishListList;
+    }
+
+    public List<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(List<Cart> carts) {
+        this.carts = carts;
     }
 }

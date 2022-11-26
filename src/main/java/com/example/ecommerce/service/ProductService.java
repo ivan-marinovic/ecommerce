@@ -5,6 +5,7 @@ import com.example.ecommerce.exception.ProductNotExistsException;
 import com.example.ecommerce.model.Category;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.repository.ProductRepository;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class ProductService {
         product.setImageUrl(productDto.getImageUrl());
         product.setPrice(productDto.getPrice());
         product.setDescription(productDto.getDescription());
+        product.setQuantity(productDto.getQuantity());
         product.setCategory(category);
         productRepository.save(product);
     }
@@ -54,10 +56,11 @@ public class ProductService {
             throw new Exception("product does not exists");
         }
         Product product = optionalProduct.get();
-        productDto.setName(product.getName());
-        productDto.setImageUrl(product.getImageUrl());
-        productDto.setPrice(product.getPrice());
-        productDto.setDescription(product.getDescription());
+        product.setName(productDto.getName());
+        product.setImageUrl(productDto.getImageUrl());
+        product.setPrice(productDto.getPrice());
+        product.setDescription(productDto.getDescription());
+        product.setQuantity(productDto.getQuantity());
         productRepository.save(product);
     }
 
@@ -69,4 +72,11 @@ public class ProductService {
         return optionalProduct.get();
     }
 
+    public void setProductQuantity(Long itemId, Integer quantity) {
+        Product product = findById(itemId);
+        Integer productQuantity = product.getQuantity();
+        Integer newQuantity = productQuantity - quantity;
+        product.setQuantity(newQuantity);
+        productRepository.save(product);
+    }
 }

@@ -30,10 +30,12 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
-    public OrderService(CartService cartService, OrderRepository orderRepository, OrderItemRepository orderItemRepository) {
+    private final ProductService productService;
+    public OrderService(CartService cartService, OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductService productService) {
         this.cartService = cartService;
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
+        this.productService = productService;
     }
 
     @Value("${BASE_URL}")
@@ -95,12 +97,14 @@ public class OrderService {
         newOrder.setTotalAmount(cartDto.getTotalAmount());
         orderRepository.save(newOrder);
 
+
         for (CartItemDto cartItemDto : cartItemDtoList) {
             OrderItem orderItem = new OrderItem();
             orderItem.setCreatedDate(new Date());
             orderItem.setPrice(cartItemDto.getProduct().getPrice());
             orderItem.setProduct(cartItemDto.getProduct());
             orderItem.setQuantity(cartItemDto.getQuantity());
+            productService.setProductQuantity(orderItem.getProduct().getProductId(), cartItemDto.getQuantity());
             orderItem.setOrder(newOrder);
             orderItemRepository.save(orderItem);
         }

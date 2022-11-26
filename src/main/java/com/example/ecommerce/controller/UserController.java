@@ -33,8 +33,6 @@ public class UserController {
         return userService.login(loginDto);
     }
 
-
-    //ne radi update
     @PutMapping("/updateUser/{userId}")
     public ResponseEntity<ApiResponse> updateUser(@PathVariable("userId") Long userId, @RequestBody UserUpdateDto userUpdateDto) throws Exception {
         userService.updateUser(userId, userUpdateDto);
