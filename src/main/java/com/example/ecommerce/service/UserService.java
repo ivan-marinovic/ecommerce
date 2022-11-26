@@ -4,6 +4,8 @@ import com.example.ecommerce.dto.user.LoginDto;
 import com.example.ecommerce.dto.user.LoginResponseDto;
 import com.example.ecommerce.dto.user.RegisterDto;
 import com.example.ecommerce.dto.ResponseDto;
+import com.example.ecommerce.dto.user.UserUpdateDto;
+import com.example.ecommerce.enums.Role;
 import com.example.ecommerce.exception.AuthenticationFailException;
 import com.example.ecommerce.exception.CustomException;
 import com.example.ecommerce.model.AuthenticationToken;
@@ -16,6 +18,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -41,10 +44,13 @@ public class UserService {
             e.printStackTrace();
         }
 
+        String userRole = String.valueOf(Role.customer);
+
         User user = new User(
                 registerDto.getFirstName(),
                 registerDto.getLastName(),
                 registerDto.getEmail(),
+                userRole,
                 encryptedPassword
         );
 
@@ -85,5 +91,17 @@ public class UserService {
         }
 
         return new LoginResponseDto("success", token.getToken());
+    }
+
+    public void updateUser(Long userId, UserUpdateDto userUpdateDto) throws Exception {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(!optionalUser.isPresent()) {
+            throw new Exception("user does not exists");
+        }
+        User user = optionalUser.get();
+        userUpdateDto.setFirstName(user.getFirstName());
+        userUpdateDto.setLastName(user.getLastName());
+        userUpdateDto.setRole(user.getRole());
+        userRepository.save(user);
     }
 }

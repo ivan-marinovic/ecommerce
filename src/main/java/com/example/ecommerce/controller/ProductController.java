@@ -48,6 +48,6 @@ public class ProductController {
             return new ResponseEntity<ApiResponse>(new ApiResponse(false, "category does not exists"), HttpStatus.BAD_REQUEST);
         }
         productService.updateProduct(productDto, productId);
-        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "product has been updated"), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(true, "product has been updated"), HttpStatus.OK);
     }
 }
