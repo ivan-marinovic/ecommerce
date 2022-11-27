@@ -79,4 +79,8 @@ public class ProductService {
         product.setQuantity(newQuantity);
         productRepository.save(product);
     }
+
+    public void deleteProduct(Long productId) {
+        productRepository.deleteById(productId);
+    }
 }

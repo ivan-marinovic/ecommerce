@@ -36,4 +36,5 @@ public class CategoryService {
     public boolean isExists(Long categoryId) {
         return categoryRepository.findById(categoryId).isPresent();
     }
+
 }

@@ -4,6 +4,7 @@ import com.example.ecommerce.common.ApiResponse;
 import com.example.ecommerce.model.Category;
 import com.example.ecommerce.service.AuthenticationService;
 import com.example.ecommerce.service.CategoryService;
+import io.swagger.annotations.Api;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,4 +45,5 @@ public class CategoryController {
         categoryService.updateCategory(categoryId, category);
         return new ResponseEntity<>(new ApiResponse(true, "category has been updated"), HttpStatus.OK);
     }
+
 }

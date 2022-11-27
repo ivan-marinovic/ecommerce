@@ -57,4 +57,10 @@ public class ProductController {
         productService.updateProduct(productDto, productId);
         return new ResponseEntity<>(new ApiResponse(true, "product has been updated"), HttpStatus.OK);
     }
+
+    @DeleteMapping(path = "{productId}")
+    public ResponseEntity<ApiResponse> deleteProduct(@PathVariable("productId") Long productId) throws Exception {
+        productService.deleteProduct(productId);
+        return new ResponseEntity<>(new ApiResponse(true, "product has been deleted"), HttpStatus.OK);
+    }
 }
