@@ -11,6 +11,9 @@ import com.example.ecommerce.exception.CustomException;
 import com.example.ecommerce.model.AuthenticationToken;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.repository.UserRepository;
+import com.example.ecommerce.utils.Helper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,10 +33,9 @@ public class UserService {
         this.authenticationService = authenticationService;
     }
 
-    @Transactional
     public ResponseDto register(RegisterDto registerDto) {
-        if(Objects.nonNull(userRepository.findByEmail(registerDto.getEmail()))) {
-            throw new CustomException("email is already taken");
+        if(Helper.notNull(userRepository.findByEmail(registerDto.getEmail()))) {
+            throw new CustomException("User already exists");
         }
 
         String encryptedPassword = registerDto.getPassword();
@@ -73,7 +75,7 @@ public class UserService {
 
     public LoginResponseDto login(LoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail());
-        if(Objects.isNull(user)) {
+        if(!Helper.notNull(user)) {
             throw new AuthenticationFailException("user does not exist");
         }
 
@@ -86,7 +88,7 @@ public class UserService {
         }
 
         AuthenticationToken token = authenticationService.getToken(user);
-        if(Objects.isNull(token)) {
+        if(!Helper.notNull(token)) {
             throw new CustomException("token does not exist");
         }
 

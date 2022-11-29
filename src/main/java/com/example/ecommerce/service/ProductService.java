@@ -5,7 +5,6 @@ import com.example.ecommerce.exception.ProductNotExistsException;
 import com.example.ecommerce.model.Category;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.repository.ProductRepository;
-import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,47 +19,33 @@ public class ProductService {
     }
 
     public void createProduct(ProductDto productDto, Category category) {
-        Product product = new Product();
-        product.setName(productDto.getName());
-        product.setImageUrl(productDto.getImageUrl());
-        product.setPrice(productDto.getPrice());
-        product.setDescription(productDto.getDescription());
-        product.setQuantity(productDto.getQuantity());
-        product.setCategory(category);
+        Product product = getProductFromDto(productDto, category);
         productRepository.save(product);
     }
 
-    public ProductDto getProductDto(Product product) {
-        ProductDto productDto = new ProductDto();
-        productDto.setName(product.getName());
-        productDto.setImageUrl(product.getImageUrl());
-        productDto.setPrice(product.getPrice());
-        productDto.setDescription(product.getDescription());
-        productDto.setId(product.getProductId());
-        productDto.setCategoryId(product.getCategory().getCategoryId());
+    public ProductDto getDtoFromProduct(Product product) {
+        ProductDto productDto = new ProductDto(product);
         return productDto;
+    }
+
+    public Product getProductFromDto(ProductDto productDto, Category category) {
+        Product product = new Product(productDto, category);
+        return product;
     }
 
     public List<ProductDto> getAllProducts() {
         List<Product> allProducts = productRepository.findAll();
         List<ProductDto> productDtos = new ArrayList<>();
         for (Product product : allProducts) {
-            productDtos.add(getProductDto(product));
+            ProductDto productDto = getDtoFromProduct(product);
+            productDtos.add(productDto);
         }
         return productDtos;
     }
 
-    public void updateProduct(ProductDto productDto, Long productId) throws Exception {
-        Optional<Product> optionalProduct = productRepository.findById(productId);
-        if(!optionalProduct.isPresent()) {
-            throw new Exception("product does not exists");
-        }
-        Product product = optionalProduct.get();
-        product.setName(productDto.getName());
-        product.setImageUrl(productDto.getImageUrl());
-        product.setPrice(productDto.getPrice());
-        product.setDescription(productDto.getDescription());
-        product.setQuantity(productDto.getQuantity());
+    public void updateProduct(Long productId, ProductDto productDto, Category category) {
+        Product product = getProductFromDto(productDto, category);
+        product.setProductId(productId);
         productRepository.save(product);
     }
 

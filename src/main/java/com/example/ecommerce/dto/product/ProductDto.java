@@ -1,31 +1,53 @@
 package com.example.ecommerce.dto.product;
 
+import com.example.ecommerce.model.Product;
+
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
 public class ProductDto {
 
-    private Long id;
+    private Long productId;
     private @NotNull String name;
+
+    @NotNull
     @Positive
-    private Double price;
+    private double price;
     private @NotNull String imageUrl;
     private @NotNull String description;
     private @NotNull Long categoryId;
-
+    @NotNull
     @PositiveOrZero
     private Integer quantity;
 
     public ProductDto() {
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public ProductDto(Product product) {
+        this.setProductId(product.getProductId());
+        this.setName(product.getName());
+        this.setImageUrl(product.getImageUrl());
+        this.setDescription(product.getDescription());
+        this.setPrice(product.getPrice());
+        this.setCategoryId(product.getCategory().getCategoryId());
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public ProductDto(@NotNull String name, @NotNull String imageURL, @NotNull @Min(value = 0) double price, @NotNull String description, @NotNull @Min(value = 0) Integer quantity, @NotNull Long categoryId) {
+        this.name = name;
+        this.imageUrl = imageURL;
+        this.price = price;
+        this.description = description;
+        this.categoryId = categoryId;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public String getName() {
@@ -36,11 +58,11 @@ public class ProductDto {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -68,11 +90,11 @@ public class ProductDto {
         this.categoryId = categoryId;
     }
 
-    public Long getId() {
-        return id;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }

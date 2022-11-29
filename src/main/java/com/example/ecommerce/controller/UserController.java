@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("api/v1/user")
 public class UserController {
@@ -23,13 +25,13 @@ public class UserController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/register")
-    public ResponseDto register(@RequestBody RegisterDto registerDto) {
+    @PostMapping(path = "register")
+    public ResponseDto register(@Valid @RequestBody RegisterDto registerDto) {
         return userService.register(registerDto);
     }
 
-    @PostMapping("/login")
-    public LoginResponseDto login(@RequestBody LoginDto loginDto) {
+    @PostMapping(path = "login")
+    public LoginResponseDto login(@Valid @RequestBody LoginDto loginDto) {
         return userService.login(loginDto);
     }
 

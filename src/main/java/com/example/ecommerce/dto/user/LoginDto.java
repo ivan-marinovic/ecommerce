@@ -1,8 +1,13 @@
 package com.example.ecommerce.dto.user;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class LoginDto {
 
+    @Email
     private String email;
+    @NotBlank
     private String password;
 
     public LoginDto(String email, String password) {
