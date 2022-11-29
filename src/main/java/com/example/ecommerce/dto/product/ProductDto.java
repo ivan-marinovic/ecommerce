@@ -1,16 +1,20 @@
 package com.example.ecommerce.dto.product;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 public class ProductDto {
 
     private Long id;
     private @NotNull String name;
+    @Positive
     private Double price;
     private @NotNull String imageUrl;
     private @NotNull String description;
     private @NotNull Long categoryId;
 
+    @PositiveOrZero
     private Integer quantity;
 
     public ProductDto() {

@@ -25,13 +25,18 @@ public class CartService {
     public void addToCart(AddToCartDto addToCartDto, User user) {
         Product product = productService.findById(addToCartDto.getProductId());
 
-        Cart cart = new Cart();
-        cart.setProduct(product);
-        cart.setUser(user);
-        cart.setQuantity(addToCartDto.getQuantity());
-        cart.setCreatedDate(new Date());
+        if(product.getQuantity() == 0) {
+            throw new IllegalStateException("out of stock");
+        }
+        else {
+            Cart cart = new Cart();
+            cart.setProduct(product);
+            cart.setUser(user);
+            cart.setQuantity(addToCartDto.getQuantity());
+            cart.setCreatedDate(new Date());
 
-        cartRepository.save(cart);
+            cartRepository.save(cart);
+        }
     }
 
     public CartDto listCartItems(User user) {

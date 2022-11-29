@@ -2,6 +2,8 @@ package com.example.ecommerce.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Entity
@@ -12,12 +14,14 @@ public class Product {
     private Long productId;
     @NotNull
     private String name;
+    @Positive
     private Double price;
     @NotNull
     private String imageUrl;
     @NotNull
     private String description;
 
+    @PositiveOrZero
     private Integer quantity;
 
     @ManyToOne
