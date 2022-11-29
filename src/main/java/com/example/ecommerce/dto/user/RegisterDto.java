@@ -2,10 +2,17 @@ package com.example.ecommerce.dto.user;
 
 import com.example.ecommerce.enums.Role;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class RegisterDto {
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
+    @Email
     private String email;
+    @NotBlank
     private String password;
 
     public String getFirstName() {

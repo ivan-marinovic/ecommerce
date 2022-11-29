@@ -27,7 +27,7 @@ public class WishListService {
         final List<WishList> wishLists = wishListRepository.findByUser(user);
         List<ProductDto> productDtos = new ArrayList<>();
         for(WishList wishList : wishLists) {
-            productDtos.add(productService.getProductDto(wishList.getProduct()));
+            productDtos.add(productService.getDtoFromProduct(wishList.getProduct()));
         }
         return productDtos;
     }

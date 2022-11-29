@@ -4,15 +4,16 @@ import com.example.ecommerce.common.ApiResponse;
 import com.example.ecommerce.model.Category;
 import com.example.ecommerce.service.AuthenticationService;
 import com.example.ecommerce.service.CategoryService;
-import io.swagger.annotations.Api;
+import com.example.ecommerce.utils.Helper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/category")
+@RequestMapping(path = "api/v1/category/")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -23,27 +24,48 @@ public class CategoryController {
     }
 
     @GetMapping(path = "all")
-    public List<Category> getCategories(Category category) {
-        return categoryService.getCategories(category);
+    ResponseEntity<List<Category>> getCategories() {
+        List<Category> body = categoryService.getAllCategories();
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse> createCategory(@RequestParam("token") String token, @RequestBody Category category) {
+    @PostMapping(path = "create")
+    public ResponseEntity<ApiResponse> createCategory(@RequestParam("token") String token,@Valid @RequestBody Category category) {
          authenticationService.authenticate(token);
          if(!authenticationService.isAuthorized(token)) {
-             return new ResponseEntity<>(new ApiResponse(true, "access denied"),HttpStatus.FORBIDDEN);
+             return new ResponseEntity<>(new ApiResponse(false, "access denied"),HttpStatus.FORBIDDEN);
+         }
+         if(Helper.notNull(categoryService.findCategoryByName(category.getCategoryName()))) {
+             return new ResponseEntity<>(new ApiResponse(false, "category already exists"),HttpStatus.CONFLICT);
          }
          categoryService.createCategory(category);
-         return new ResponseEntity<>(new ApiResponse(true, "new category created"),HttpStatus.CREATED);
+         return new ResponseEntity<>(new ApiResponse(true, "category created"), HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "{categoryId}")
-    public ResponseEntity<ApiResponse> updateCategory(@PathVariable("categoryId") Long categoryId,@RequestBody Category category) {
-        if(!categoryService.isExists(categoryId)) {
+    @PutMapping(path = "update/{categoryId}")
+    public ResponseEntity<ApiResponse> updateCategory(@RequestParam("token") String token, @PathVariable("categoryId") Long categoryId, @Valid @RequestBody Category category) {
+        authenticationService.authenticate(token);
+        if(!authenticationService.isAuthorized(token)) {
+            return new ResponseEntity<>(new ApiResponse(false, "access denied"),HttpStatus.FORBIDDEN);
+        }
+        if(Helper.notNull(categoryService.findCategoryById(categoryId))) {
+            categoryService.updateCategory(categoryId, category);
+            return new ResponseEntity<>(new ApiResponse(true, "category updated"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ApiResponse(false, "category does not exists"), HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping(path = "{categoryId}")
+    public ResponseEntity<ApiResponse> deleteCategory(@RequestParam("token") String token, @PathVariable("categoryId") Long categoryId) {
+        authenticationService.authenticate(token);
+        if(!authenticationService.isAuthorized(token)) {
+            return new ResponseEntity<>(new ApiResponse(false, "access denied"),HttpStatus.FORBIDDEN);
+        }
+        if(!Helper.notNull(categoryService.findCategoryById(categoryId))) {
             return new ResponseEntity<>(new ApiResponse(false, "category does not exists"), HttpStatus.NOT_FOUND);
         }
-        categoryService.updateCategory(categoryId, category);
-        return new ResponseEntity<>(new ApiResponse(true, "category has been updated"), HttpStatus.OK);
+        categoryService.deleteCategoryById(categoryId);
+        return new ResponseEntity<>(new ApiResponse(true, "category deleted"), HttpStatus.OK);
     }
 
 }

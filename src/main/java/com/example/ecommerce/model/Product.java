@@ -1,5 +1,8 @@
 package com.example.ecommerce.model;
 
+import com.example.ecommerce.dto.product.ProductDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -14,26 +17,50 @@ public class Product {
     private Long productId;
     @NotNull
     private String name;
+    @NotNull
     @Positive
-    private Double price;
+    private double price;
     @NotNull
     private String imageUrl;
     @NotNull
     private String description;
-
     @PositiveOrZero
     private Integer quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "categoryId")
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "categoryId", nullable = false)
     Category category;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<WishList> wishListList;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<Cart> carts;
 
+    public Product() {
+    }
+
+    public Product(String name, double price, String imageUrl, String description, Integer quantity, Category category) {
+        super();
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.quantity = quantity;
+        this.category = category;
+    }
+
+    public Product(ProductDto productDto, Category category) {
+        this.name = productDto.getName();
+        this.imageUrl = productDto.getImageUrl();
+        this.description = productDto.getDescription();
+        this.price = productDto.getPrice();
+        this.quantity = productDto.getQuantity();
+        this.category = category;
+    }
 
     public Long getProductId() {
         return productId;
@@ -51,11 +78,11 @@ public class Product {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -75,14 +102,6 @@ public class Product {
         this.description = description;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
@@ -91,19 +110,23 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public List<WishList> getWishListList() {
-        return wishListList;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setWishListList(List<WishList> wishListList) {
-        this.wishListList = wishListList;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public List<Cart> getCarts() {
-        return carts;
-    }
-
-    public void setCarts(List<Cart> carts) {
-        this.carts = carts;
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", description='" + description + '\'' +
+                ", quantity=" + quantity +
+                '}';
     }
 }

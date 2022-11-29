@@ -5,6 +5,8 @@ import com.example.ecommerce.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -13,17 +15,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
+    @Email
     private String email;
+    @NotBlank
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user",
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Order> orders;
 
 
