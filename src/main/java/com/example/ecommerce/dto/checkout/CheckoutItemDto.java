@@ -4,7 +4,7 @@ public class CheckoutItemDto {
 
     private String productName;
     private Integer quantity;
-    private Double price;
+    private double price;
     private Long productId;
     private Long userId;
 
@@ -27,11 +27,11 @@ public class CheckoutItemDto {
         this.quantity = quantity;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
