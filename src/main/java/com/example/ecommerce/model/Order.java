@@ -13,7 +13,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
     private Date createdDate;
-    private Double totalAmount;
+    private double totalAmount;
     private String sessionId;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)

@@ -11,13 +11,13 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
 
-    @NotBlank
+    @NotBlank(message = "name is mandatory")
     private String categoryName;
 
-    @NotBlank
+    @NotBlank(message = "description is mandatory")
     private String description;
 
-    @NotBlank
+    @NotBlank(message = "image is mandatory")
     private String imageUrl;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
