@@ -63,7 +63,7 @@ public class OrderService {
     }
 
 
-    public Session createSession(List<CheckoutItemDto> checkoutItemDtoList) throws StripeException, StripeException {
+    public Session createSession(List<CheckoutItemDto> checkoutItemDtoList) throws StripeException {
 
         String successURL = baseURL + "payment/success";
         String failedURL = baseURL + "payment/failed";
@@ -87,12 +87,13 @@ public class OrderService {
     }
 
 
-    public void placeOrder(User user) {
+    public void placeOrder(User user, String sessionId) {
         CartDto cartDto = cartService.listCartItems(user);
         List<CartItemDto> cartItemDtoList = cartDto.getCartItems();
 
         Order newOrder = new Order();
         newOrder.setCreatedDate(new Date());
+        newOrder.setSessionId(sessionId);
         newOrder.setUser(user);
         newOrder.setTotalAmount(cartDto.getTotalAmount());
         orderRepository.save(newOrder);
