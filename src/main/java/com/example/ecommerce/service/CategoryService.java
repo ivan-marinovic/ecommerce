@@ -33,13 +33,15 @@ public class CategoryService {
         return categoryRepository.findById(categoryId);
     }
 
-    public void updateCategory(Long categoryId, Category newCategory) {
-        Category category = categoryRepository.findById(categoryId).get();
-        category.setCategoryName(newCategory.getCategoryName());
-        category.setDescription(newCategory.getDescription());
-        category.setImageUrl(newCategory.getImageUrl());
-        category.setProducts(newCategory.getProducts());
-        categoryRepository.save(category);
+    public void updateCategory(Long categoryId, Category category) throws Exception {
+        Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
+        if(!optionalCategory.isPresent()) {
+            throw new Exception("category does not exists");
+        }
+        Category updatedCategory = optionalCategory.get();
+        updatedCategory.setCategoryName(category.getCategoryName());
+        updatedCategory.setDescription(category.getDescription());
+        categoryRepository.save(updatedCategory);
     }
 
     public void deleteCategoryById(Long categoryId) {

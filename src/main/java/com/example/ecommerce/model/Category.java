@@ -17,9 +17,6 @@ public class Category {
     @NotBlank(message = "description is mandatory")
     private String description;
 
-    @NotBlank(message = "image is mandatory")
-    private String imageUrl;
-
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     Set<Product> products;
 
@@ -29,12 +26,6 @@ public class Category {
     public Category(@NotBlank String categoryName, @NotBlank String description) {
         this.categoryName = categoryName;
         this.description = description;
-    }
-
-    public Category(@NotBlank String categoryName, @NotBlank String description, @NotBlank String imageUrl) {
-        this.categoryName = categoryName;
-        this.description = description;
-        this.imageUrl = imageUrl;
     }
 
     public Long getCategoryId() {
@@ -59,14 +50,6 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public Set<Product> getProducts() {

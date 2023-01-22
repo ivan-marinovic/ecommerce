@@ -1,7 +1,5 @@
 package com.example.ecommerce.model;
 
-
-import com.example.ecommerce.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 

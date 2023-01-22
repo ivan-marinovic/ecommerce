@@ -28,13 +28,13 @@ public class CartService {
         if(product.getQuantity() == 0) {
             throw new IllegalStateException("out of stock");
         }
+
         else {
             Cart cart = new Cart();
             cart.setProduct(product);
             cart.setUser(user);
             cart.setQuantity(addToCartDto.getQuantity());
             cart.setCreatedDate(new Date());
-
             cartRepository.save(cart);
         }
     }

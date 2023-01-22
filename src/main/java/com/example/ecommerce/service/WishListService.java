@@ -4,6 +4,7 @@ import com.example.ecommerce.dto.product.ProductDto;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.model.WishList;
 import com.example.ecommerce.repository.WishListRepository;
+import com.example.ecommerce.service.presentation.ProductPresentationService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,9 +15,11 @@ public class WishListService {
 
     private final WishListRepository wishListRepository;
     private final ProductService productService;
-    public WishListService(WishListRepository wishListRepository, ProductService productService) {
+    private ProductPresentationService productPresentationService;
+    public WishListService(WishListRepository wishListRepository, ProductService productService, ProductPresentationService productPresentationService) {
         this.wishListRepository = wishListRepository;
         this.productService = productService;
+        this.productPresentationService = productPresentationService;
     }
 
     public void createWishList(WishList wishList) {
@@ -25,10 +28,10 @@ public class WishListService {
 
     public List<ProductDto> getWishListForUser(User user) {
         final List<WishList> wishLists = wishListRepository.findByUser(user);
-        List<ProductDto> productDtos = new ArrayList<>();
+        List<ProductDto> productsDto = new ArrayList<>();
         for(WishList wishList : wishLists) {
-            productDtos.add(productService.getDtoFromProduct(wishList.getProduct()));
+            productsDto.add(productPresentationService.convertModelToDto(wishList.getProduct()));
         }
-        return productDtos;
+        return productsDto;
     }
 }

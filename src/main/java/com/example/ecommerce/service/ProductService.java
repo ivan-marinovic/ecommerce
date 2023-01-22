@@ -5,6 +5,7 @@ import com.example.ecommerce.exception.ProductNotExistsException;
 import com.example.ecommerce.model.Category;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.repository.ProductRepository;
+import com.example.ecommerce.service.presentation.ProductPresentationService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,35 +19,34 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public void createProduct(ProductDto productDto, Category category) {
-        Product product = getProductFromDto(productDto, category);
-        productRepository.save(product);
+    public void createProduct(Product product, Category category) {
+        Product newProduct = new Product();
+        newProduct.setName(product.getName());
+        newProduct.setDescription(product.getDescription());
+        newProduct.setPrice(product.getPrice());
+        newProduct.setQuantity(product.getQuantity());
+        newProduct.setImageUrl(product.getImageUrl());
+        newProduct.setCategory(category);
+        productRepository.save(newProduct);
     }
 
-    public ProductDto getDtoFromProduct(Product product) {
-        ProductDto productDto = new ProductDto(product);
-        return productDto;
-    }
-
-    public Product getProductFromDto(ProductDto productDto, Category category) {
-        Product product = new Product(productDto, category);
-        return product;
-    }
-
-    public List<ProductDto> getAllProducts() {
+    public List<Product> getAllProducts() {
         List<Product> allProducts = productRepository.findAll();
-        List<ProductDto> productDtos = new ArrayList<>();
-        for (Product product : allProducts) {
-            ProductDto productDto = getDtoFromProduct(product);
-            productDtos.add(productDto);
-        }
-        return productDtos;
+        return allProducts;
     }
 
-    public void updateProduct(Long productId, ProductDto productDto, Category category) {
-        Product product = getProductFromDto(productDto, category);
-        product.setProductId(productId);
-        productRepository.save(product);
+    public void updateProduct(Product product, Long productId) throws ProductNotExistsException {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if(!productOptional.isPresent()) {
+            throw new ProductNotExistsException("product does not exists " + productId);
+        }
+        Product updatedProduct = productOptional.get();
+        updatedProduct.setName(product.getName());
+        updatedProduct.setImageUrl(product.getImageUrl());
+        updatedProduct.setDescription(product.getDescription());
+        updatedProduct.setPrice(product.getPrice());
+        updatedProduct.setQuantity(product.getQuantity());
+        productRepository.save(updatedProduct);
     }
 
     public Product findById(Long productId) throws ProductNotExistsException {
