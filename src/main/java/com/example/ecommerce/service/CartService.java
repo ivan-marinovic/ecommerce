@@ -3,7 +3,7 @@ package com.example.ecommerce.service;
 import com.example.ecommerce.dto.cart.AddToCartDto;
 import com.example.ecommerce.dto.cart.CartDto;
 import com.example.ecommerce.dto.cart.CartItemDto;
-import com.example.ecommerce.exception.CustomException;
+import com.example.ecommerce.exception.CartItemNotFoundException;
 import com.example.ecommerce.model.Cart;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.User;
@@ -60,13 +60,13 @@ public class CartService {
         Optional<Cart> optionalCart = cartRepository.findById(cartItemId);
 
         if(optionalCart.isEmpty()) {
-            throw new CustomException("cart item id is invalid: " + cartItemId);
+            throw new CartItemNotFoundException("cart item id is invalid: " + cartItemId);
         }
 
         Cart cart = optionalCart.get();
 
         if(cart.getUser() != user) {
-            throw new CustomException("cart item does not belong to user: " + cartItemId);
+            throw new CartItemNotFoundException("cart item does not belong to user: " + cartItemId);
         }
 
         cartRepository.delete(cart);

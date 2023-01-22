@@ -1,18 +1,18 @@
-package com.example.ecommerce.common;
+package com.example.ecommerce.response;
 
 import java.time.LocalDateTime;
 
 public class ApiResponse {
-    private final boolean success;
+    private final Integer status;
     private final String message;
 
-    public ApiResponse(boolean success, String message) {
-        this.success = success;
+    public ApiResponse(Integer status, String message) {
+        this.status = status;
         this.message = message;
     }
 
-    public boolean isSuccess() {
-        return success;
+    public Integer getStatus() {
+        return status;
     }
 
     public String getMessage() {

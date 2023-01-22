@@ -3,12 +3,14 @@ package com.example.ecommerce.model;
 
 import com.example.ecommerce.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "user")
 public class User {
@@ -23,9 +25,7 @@ public class User {
     private String email;
     @NotBlank
     private String password;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String role;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -38,7 +38,7 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.role = Role.valueOf(role);
+        this.role = role;
         this.password = password;
     }
 
@@ -82,11 +82,11 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
