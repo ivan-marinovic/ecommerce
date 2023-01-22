@@ -1,15 +1,16 @@
 package com.example.ecommerce.controller;
 
-import com.example.ecommerce.common.ApiResponse;
+import com.example.ecommerce.response.ApiResponse;
+import com.example.ecommerce.config.JwtService;
 import com.example.ecommerce.dto.user.LoginDto;
-import com.example.ecommerce.dto.user.LoginResponseDto;
-import com.example.ecommerce.dto.user.RegisterDto;
-import com.example.ecommerce.dto.ResponseDto;
-import com.example.ecommerce.dto.user.UserUpdateDto;
-import com.example.ecommerce.service.AuthenticationService;
+import com.example.ecommerce.model.User;
 import com.example.ecommerce.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,25 +20,27 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-    private final AuthenticationService authenticationService;
-    public UserController(UserService userService, AuthenticationService authenticationService) {
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+    public UserController(UserService userService,JwtService jwtService, AuthenticationManager authenticationManager) {
         this.userService = userService;
-        this.authenticationService = authenticationService;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
     }
 
-    @PostMapping(path = "register")
-    public ResponseDto register(@Valid @RequestBody RegisterDto registerDto) {
-        return userService.register(registerDto);
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse> register(@Valid @RequestBody User user) {
+        userService.register(user);
+        return new ResponseEntity<>(new ApiResponse(1, "user has been created"), HttpStatus.OK);
     }
 
-    @PostMapping(path = "login")
-    public LoginResponseDto login(@Valid @RequestBody LoginDto loginDto) {
-        return userService.login(loginDto);
-    }
-
-    @PutMapping("/updateUser/{userId}")
-    public ResponseEntity<ApiResponse> updateUser(@PathVariable("userId") Long userId, @RequestBody UserUpdateDto userUpdateDto) throws Exception {
-        userService.updateUser(userId, userUpdateDto);
-        return new ResponseEntity<>(new ApiResponse(true, "user has been updated"), HttpStatus.OK);
+    @PostMapping("/login")
+    public String authenticateAndGetToken(@RequestBody LoginDto loginDto) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
+        if (authentication.isAuthenticated()) {
+            return jwtService.generateToken(loginDto.getEmail());
+        } else {
+            throw new UsernameNotFoundException("invalid user request !");
+        }
     }
 }

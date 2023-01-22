@@ -1,7 +1,5 @@
 package com.example.ecommerce.dto.user;
 
-import com.example.ecommerce.enums.Role;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
