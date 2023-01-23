@@ -27,11 +27,11 @@ public class UserService {
     }
 
     public User getUserByToken(String token) {
+        token = token.substring(7);
         String username = jwtService.extractUsername(token);
         Optional<User> optionalUser = userRepository.findByEmail(username);
         User user = optionalUser.get();
         return user;
     }
-
 
 }
