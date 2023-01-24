@@ -1,7 +1,7 @@
 package com.example.ecommerce.controller;
 
 import com.example.ecommerce.dto.checkout.CheckoutItemDto;
-import com.example.ecommerce.dto.checkout.StripeResponse;
+import com.example.ecommerce.response.StripeResponse;
 import com.example.ecommerce.exception.OrderNotFoundException;
 import com.example.ecommerce.model.Order;
 import com.example.ecommerce.model.User;

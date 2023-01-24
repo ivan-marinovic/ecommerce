@@ -1,4 +1,4 @@
-package com.example.ecommerce.dto.checkout;
+package com.example.ecommerce.response;
 
 public class StripeResponse {
 

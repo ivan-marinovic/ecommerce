@@ -4,6 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 public class RegisterDto {
+    private Long userId;
     @NotBlank
     private String firstName;
     @NotBlank
@@ -12,6 +13,8 @@ public class RegisterDto {
     private String email;
     @NotBlank
     private String password;
+    @NotBlank
+    private String role;
 
     public String getFirstName() {
         return firstName;
@@ -35,6 +38,22 @@ public class RegisterDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getPassword() {
