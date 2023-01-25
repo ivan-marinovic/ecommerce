@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionControllerAdvice {
     @ExceptionHandler(value = CartItemNotFoundException.class)
-    public final ResponseEntity<String> handleCustomException(CartItemNotFoundException exception) {
+    public final ResponseEntity<String> cartItemNotFoundException(CartItemNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
