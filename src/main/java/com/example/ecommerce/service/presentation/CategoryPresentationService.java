@@ -14,7 +14,7 @@ public class CategoryPresentationService {
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setCategoryId(category.getCategoryId());
         categoryDto.setCategoryName(category.getCategoryName());
-        categoryDto.setDescription(categoryDto.getDescription());
+        categoryDto.setDescription(category.getDescription());
         return categoryDto;
     }
 

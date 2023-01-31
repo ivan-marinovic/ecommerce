@@ -46,25 +46,14 @@ public class ProductController {
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> createProduct(@Valid @RequestBody ProductDto productDto) {
-
-        Optional<Category> optionalCategory = categoryService.findCategoryById(productDto.getCategoryId());
-        if(!optionalCategory.isPresent()) {
-            return new ResponseEntity<>(new ApiResponse(0, "category does not exists"), HttpStatus.CONFLICT);
-        }
-        Category category = optionalCategory.get();
         Product product = productPresentationService.convertDtoToModel(productDto);
-        productService.createProduct(product, category);
+        productService.createProduct(product);
         return new ResponseEntity<>(new ApiResponse(1, "product has been created"),HttpStatus.CREATED);
     }
 
     @PutMapping("/{productId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> updateProduct(@PathVariable("productId") Long productId, @Valid @RequestBody ProductDto productDto) throws Exception {
-        Optional<Category>optionalCategory = categoryService.findCategoryById(productDto.getCategoryId());
-        if(!optionalCategory.isPresent()){
-            return new ResponseEntity<ApiResponse>(new ApiResponse(0, "category does not exists"), HttpStatus.CONFLICT);
-        }
-        Category category = optionalCategory.get();
         Product product = productPresentationService.convertDtoToModel(productDto);
         productService.updateProduct(product, productId);
         return new ResponseEntity<>(new ApiResponse(1, "product has been updated"), HttpStatus.OK);
@@ -74,6 +63,6 @@ public class ProductController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable("productId") Long productId) throws Exception {
         productService.deleteProduct(productId);
-        return new ResponseEntity<>(new ApiResponse(0, "product has been deleted"), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(1, "product has been deleted"), HttpStatus.OK);
     }
 }

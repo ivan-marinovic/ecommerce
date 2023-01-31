@@ -50,9 +50,9 @@ public class CategoryController {
 
     @DeleteMapping("/{categoryId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<ApiResponse> deleteCategory(@PathVariable("categoryId") Long categoryId) {
+    public ResponseEntity<ApiResponse> deleteCategory(@PathVariable("categoryId") Long categoryId) throws Exception {
         categoryService.deleteCategoryById(categoryId);
-        return new ResponseEntity<>(new ApiResponse(1, "category deleted"), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(1, "category has been deleted"), HttpStatus.OK);
     }
 
 }

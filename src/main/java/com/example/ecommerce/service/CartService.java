@@ -4,6 +4,7 @@ import com.example.ecommerce.dto.cart.AddToCartDto;
 import com.example.ecommerce.dto.cart.CartDto;
 import com.example.ecommerce.dto.cart.CartItemDto;
 import com.example.ecommerce.exception.CartItemNotFoundException;
+import com.example.ecommerce.exception.OutOfStockException;
 import com.example.ecommerce.model.Cart;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.User;
@@ -26,7 +27,7 @@ public class CartService {
         Product product = productService.findById(addToCartDto.getProductId());
 
         if(product.getQuantity() == 0) {
-            throw new IllegalStateException("out of stock");
+            throw new OutOfStockException("out of stock");
         }
 
         else {

@@ -1,9 +1,13 @@
 package com.example.ecommerce.dto.category;
 
+import javax.validation.constraints.NotNull;
+
 public class CategoryDto {
 
     private Long categoryId;
+    @NotNull
     private String categoryName;
+    @NotNull
     private String description;
 
     public CategoryDto() {

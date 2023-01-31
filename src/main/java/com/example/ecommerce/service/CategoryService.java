@@ -1,5 +1,7 @@
 package com.example.ecommerce.service;
 
+import com.example.ecommerce.exception.CategoryNameExists;
+import com.example.ecommerce.exception.CategoryNotFoundException;
 import com.example.ecommerce.model.Category;
 import com.example.ecommerce.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class CategoryService {
     }
 
     public void createCategory(Category category) {
+        if(isCategoryNameExists(category)) {
+            throw new CategoryNameExists("category with name " + category.getCategoryName() + " already exists");
+        }
         categoryRepository.save(category);
     }
 
@@ -25,18 +30,22 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category findCategoryByName(String categoryName) {
-        return categoryRepository.findByCategoryName(categoryName);
-    }
-
     public Optional<Category> findCategoryById(Long categoryId) {
         return categoryRepository.findById(categoryId);
     }
 
-    public void updateCategory(Long categoryId, Category category) throws Exception {
+    public boolean isCategoryNameExists(Category category) {
+        Optional<Category> optionalCategory = categoryRepository.findByCategoryName(category.getCategoryName());
+        if (optionalCategory.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
+    public void updateCategory(Long categoryId, Category category){
         Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
-        if(!optionalCategory.isPresent()) {
-            throw new Exception("category does not exists");
+        if(optionalCategory.isEmpty()) {
+            throw new CategoryNotFoundException("category with id " + categoryId  + " does not exists");
         }
         Category updatedCategory = optionalCategory.get();
         updatedCategory.setCategoryName(category.getCategoryName());
@@ -44,7 +53,12 @@ public class CategoryService {
         categoryRepository.save(updatedCategory);
     }
 
-    public void deleteCategoryById(Long categoryId) {
+    public void deleteCategoryById(Long categoryId){
+        Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
+        if(optionalCategory.isEmpty()) {
+            throw new CategoryNotFoundException("category with id " + categoryId  + " does not exists");
+        }
         categoryRepository.deleteById(categoryId);
+
     }
 }

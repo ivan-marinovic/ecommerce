@@ -1,6 +1,6 @@
 package com.example.ecommerce.exception;
 
-public class OrderNotFoundException extends IllegalArgumentException {
+public class OrderNotFoundException extends RuntimeException {
     public OrderNotFoundException(String msg) {
         super(msg);
     }

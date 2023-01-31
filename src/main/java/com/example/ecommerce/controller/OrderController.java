@@ -1,7 +1,6 @@
 package com.example.ecommerce.controller;
 
 import com.example.ecommerce.dto.checkout.CheckoutItemDto;
-import com.example.ecommerce.response.StripeResponse;
 import com.example.ecommerce.exception.OrderNotFoundException;
 import com.example.ecommerce.model.Order;
 import com.example.ecommerce.model.User;
@@ -12,6 +11,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,14 +36,15 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> placeOrder(@RequestHeader(name = "Authorization") String token, @RequestParam("sessionId") String sessionId) {
+    public ResponseEntity<ApiResponse> placeOrder(@RequestHeader(name = "Authorization") String token) {
         User user = userService.getUserByToken(token);
-        orderService.placeOrder(user, sessionId);
+        orderService.placeOrder(user);
         return new ResponseEntity<>(new ApiResponse(1, "Order has been placed"),HttpStatus.CREATED);
     }
 
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<List<Order>> getAllOrders(@RequestHeader(name = "Authorization") String token) {
         User user = userService.getUserByToken(token);
         List<Order> orderDtoList = orderService.listOrders(user);
@@ -51,6 +52,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<Object> getOrderById(@PathVariable("id") Long id)
      {
         try {

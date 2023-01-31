@@ -14,7 +14,6 @@ public class Order {
     private Long orderId;
     private Date createdDate;
     private double totalAmount;
-    private String sessionId;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
@@ -49,14 +48,6 @@ public class Order {
 
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
     }
 
     public List<OrderItem> getOrderItems() {

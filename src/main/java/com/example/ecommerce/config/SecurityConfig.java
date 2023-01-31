@@ -3,6 +3,7 @@ package com.example.ecommerce.config;
 import com.example.ecommerce.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -41,6 +42,9 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .authorizeHttpRequests()
                 .antMatchers("/api/v1/user/**").permitAll()
+                .and()
+                .authorizeHttpRequests()
+                .antMatchers(HttpMethod.GET, "/api/v1/category","/api/v1/product").permitAll()
                 .and()
                 .authorizeHttpRequests().antMatchers("/**")
                 .authenticated().and()

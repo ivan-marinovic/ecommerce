@@ -38,62 +38,13 @@ public class OrderService {
         this.productService = productService;
     }
 
-    @Value("${BASE_URL}")
-    private String baseURL;
 
-    @Value("${STRIPE_SECRET_KEY}")
-    private String apiKey;
-
-    SessionCreateParams.LineItem.PriceData createPriceData(CheckoutItemDto checkoutItemDto) {
-        return SessionCreateParams.LineItem.PriceData.builder()
-                .setCurrency("usd")
-                .setUnitAmount((long)(checkoutItemDto.getPrice()*100))
-                .setProductData(
-                        SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                .setName(checkoutItemDto.getProductName())
-                                .build())
-                .build();
-    }
-
-    SessionCreateParams.LineItem createSessionLineItem(CheckoutItemDto checkoutItemDto) {
-        return SessionCreateParams.LineItem.builder()
-                .setPriceData(createPriceData(checkoutItemDto))
-                .setQuantity(Long.parseLong(String.valueOf(checkoutItemDto.getQuantity())))
-                .build();
-    }
-
-
-    public Session createSession(List<CheckoutItemDto> checkoutItemDtoList) throws StripeException {
-
-        String successURL = baseURL + "payment/success";
-        String failedURL = baseURL + "payment/failed";
-
-        Stripe.apiKey = apiKey;
-
-        List<SessionCreateParams.LineItem> sessionItemsList = new ArrayList<>();
-
-        for (CheckoutItemDto checkoutItemDto : checkoutItemDtoList) {
-            sessionItemsList.add(createSessionLineItem(checkoutItemDto));
-        }
-
-        SessionCreateParams params = SessionCreateParams.builder()
-                .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-                .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setCancelUrl(failedURL)
-                .addAllLineItem(sessionItemsList)
-                .setSuccessUrl(successURL)
-                .build();
-        return Session.create(params);
-    }
-
-
-    public void placeOrder(User user, String sessionId) {
+    public void placeOrder(User user) {
         CartDto cartDto = cartService.listCartItems(user);
         List<CartItemDto> cartItemDtoList = cartDto.getCartItems();
 
         Order newOrder = new Order();
         newOrder.setCreatedDate(new Date());
-        newOrder.setSessionId(sessionId);
         newOrder.setUser(user);
         newOrder.setTotalAmount(cartDto.getTotalAmount());
         orderRepository.save(newOrder);
@@ -117,7 +68,7 @@ public class OrderService {
         return orderRepository.findAllByUser(user);
     }
 
-    public Order getOrder(Long orderId) throws OrderNotFoundException {
+    public Order getOrder(Long orderId) {
         Optional<Order> order = orderRepository.findById(orderId);
         if (order.isPresent()) {
             return order.get();
