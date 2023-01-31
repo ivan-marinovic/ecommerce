@@ -1,5 +1,6 @@
 package com.example.ecommerce.dto.product;
 
+import com.example.ecommerce.model.Category;
 import com.example.ecommerce.model.Product;
 
 import javax.validation.constraints.Min;
