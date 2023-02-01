@@ -19,6 +19,8 @@ public class User {
     private String firstName;
     @NotBlank
     private String lastName;
+    @NotBlank
+    private String Address;
     @Email
     private String email;
     @NotBlank
@@ -46,6 +48,14 @@ public class User {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
     }
 
     public String getFirstName() {

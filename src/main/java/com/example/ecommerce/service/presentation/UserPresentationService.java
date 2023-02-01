@@ -15,6 +15,7 @@ public class UserPresentationService {
         user.setFirstName(registerDto.getFirstName());
         user.setLastName(registerDto.getLastName());
         user.setPassword(registerDto.getPassword());
+        user.setAddress(registerDto.getAddress());
         user.setRole(registerDto.getRole());
 
         return user;

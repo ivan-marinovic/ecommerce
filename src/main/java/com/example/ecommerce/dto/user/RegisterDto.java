@@ -15,6 +15,8 @@ public class RegisterDto {
     private String password;
     @NotBlank
     private String role;
+    @NotBlank
+    private String address;
 
     public String getFirstName() {
         return firstName;
@@ -38,6 +40,14 @@ public class RegisterDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Long getUserId() {

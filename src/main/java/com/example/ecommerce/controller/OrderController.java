@@ -1,14 +1,11 @@
 package com.example.ecommerce.controller;
 
-import com.example.ecommerce.dto.checkout.CheckoutItemDto;
 import com.example.ecommerce.exception.OrderNotFoundException;
 import com.example.ecommerce.model.Order;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.response.ApiResponse;
 import com.example.ecommerce.service.OrderService;
 import com.example.ecommerce.service.UserService;
-import com.stripe.exception.StripeException;
-import com.stripe.model.checkout.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,14 +22,6 @@ public class OrderController {
     public OrderController(OrderService orderService, UserService userService) {
         this.orderService = orderService;
         this.userService = userService;
-    }
-
-    @PostMapping("/create-checkout-session")
-    public ResponseEntity<StripeResponse> checkoutList(@RequestBody List<CheckoutItemDto> checkoutItemDtoList)
-    throws StripeException {
-        Session session = orderService.createSession(checkoutItemDtoList);
-        StripeResponse stripeResponse = new StripeResponse(session.getId());
-        return new ResponseEntity<>(stripeResponse, HttpStatus.OK);
     }
 
     @PostMapping

@@ -2,23 +2,15 @@ package com.example.ecommerce.service;
 
 import com.example.ecommerce.dto.cart.CartDto;
 import com.example.ecommerce.dto.cart.CartItemDto;
-import com.example.ecommerce.dto.checkout.CheckoutItemDto;
 import com.example.ecommerce.exception.OrderNotFoundException;
 import com.example.ecommerce.model.Order;
 import com.example.ecommerce.model.OrderItem;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.repository.OrderItemRepository;
 import com.example.ecommerce.repository.OrderRepository;
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.checkout.Session;
-import com.stripe.param.checkout.SessionCreateParams;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,13 +23,14 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final ProductService productService;
-    public OrderService(CartService cartService, OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductService productService) {
+    private final ShipmentService shipmentService;
+    public OrderService(CartService cartService, OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductService productService, ShipmentService shipmentService) {
         this.cartService = cartService;
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.productService = productService;
+        this.shipmentService = shipmentService;
     }
-
 
     public void placeOrder(User user) {
         CartDto cartDto = cartService.listCartItems(user);
@@ -47,7 +40,9 @@ public class OrderService {
         newOrder.setCreatedDate(new Date());
         newOrder.setUser(user);
         newOrder.setTotalAmount(cartDto.getTotalAmount());
+        newOrder.setAddress(user.getAddress());
         orderRepository.save(newOrder);
+        shipmentService.createShipment(newOrder);
 
 
         for (CartItemDto cartItemDto : cartItemDtoList) {
