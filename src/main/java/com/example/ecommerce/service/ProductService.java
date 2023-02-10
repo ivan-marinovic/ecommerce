@@ -22,8 +22,8 @@ public class ProductService {
         this.categoryService = categoryService;
     }
 
-    public void createProduct(Product product) {
-        Optional<Category> optionalCategory = categoryService.findCategoryById(product.getProductId());
+    public void createProduct(Product product, Long categoryId) {
+        Optional<Category> optionalCategory = categoryService.findCategoryById(categoryId);
         if(optionalCategory.isEmpty()) {
             throw new CategoryNotFoundException("category does not exists");
         }

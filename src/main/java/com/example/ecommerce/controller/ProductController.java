@@ -47,7 +47,8 @@ public class ProductController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> createProduct(@Valid @RequestBody ProductDto productDto) {
         Product product = productPresentationService.convertDtoToModel(productDto);
-        productService.createProduct(product);
+        Long categoryId = productDto.getCategoryId();
+        productService.createProduct(product, categoryId);
         return new ResponseEntity<>(new ApiResponse(1, "product has been created"),HttpStatus.CREATED);
     }
 
