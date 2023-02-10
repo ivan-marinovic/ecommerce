@@ -2,10 +2,14 @@ package com.example.ecommerce.service.presentation;
 
 import com.example.ecommerce.dto.product.ProductDto;
 import com.example.ecommerce.model.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Optional.empty;
 
 @Service
 public class ProductPresentationService {
@@ -23,11 +27,11 @@ public class ProductPresentationService {
         }
 
         public List<ProductDto> convertModelToDtoList(List<Product> products) {
-            List<ProductDto> categoriesDto = new ArrayList<>();
-            for(Product book : products) {
-                categoriesDto.add(convertModelToDto(book));
+            List<ProductDto> productsDto = new ArrayList<>();
+            for(Product product : products) {
+                productsDto.add(convertModelToDto(product));
             }
-            return categoriesDto;
+            return productsDto;
         }
 
 
@@ -43,4 +47,11 @@ public class ProductPresentationService {
             return product;
         }
 
+    public List<ProductDto> convertModelToDtoPage(Page<Product> products) {
+        List<ProductDto> productsDto = new ArrayList<>();
+        for(Product product : products) {
+            productsDto.add(convertModelToDto(product));
+        }
+        return productsDto;
+    }
 }

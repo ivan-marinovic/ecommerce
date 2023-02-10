@@ -38,9 +38,10 @@ public class ProductController {
     }
 
     @GetMapping("/{offset}/{pageSize}/{field}")
-    public ResponseEntity<Page<Product>> getProductsWithPaginationAndSorting(@PathVariable int offset, @PathVariable int pageSize,@PathVariable String field) {
+    public ResponseEntity<List<ProductDto>> getProductsWithPaginationAndSorting(@PathVariable int offset, @PathVariable int pageSize,@PathVariable String field) {
         Page<Product> products = productService.findProductWithPaginationAndSorting(offset, pageSize, field);
-        return new ResponseEntity<>(products, HttpStatus.OK);
+        List<ProductDto> productsDto = productPresentationService.convertModelToDtoPage(products);
+        return new ResponseEntity<>(productsDto, HttpStatus.OK);
     }
 
     @PostMapping
