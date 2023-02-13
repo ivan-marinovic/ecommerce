@@ -32,6 +32,7 @@ public class ShipmentController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> updateLocation() {
         shipmentService.updateLocation();
         return new ResponseEntity<>(new ApiResponse(1, "locations for shipments has been updated"), HttpStatus.OK);
