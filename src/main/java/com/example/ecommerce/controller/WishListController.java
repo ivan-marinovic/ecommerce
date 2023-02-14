@@ -9,6 +9,7 @@ import com.example.ecommerce.service.UserService;
 import com.example.ecommerce.service.WishListService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class WishListController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<ApiResponse> addToWishlist(@RequestBody Product product, @RequestHeader(name = "Authorization") String token) {
         User user = userService.getUserByToken(token);
         WishList wishList = new WishList(user, product);
@@ -33,6 +35,7 @@ public class WishListController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<List<ProductDto>> getWishList(@RequestHeader(name = "Authorization") String token) {
         User user = userService.getUserByToken(token);
         List<ProductDto> productsDto = wishListService.getWishListForUser(user);

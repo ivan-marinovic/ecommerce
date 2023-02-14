@@ -25,6 +25,7 @@ public class OrderController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<ApiResponse> placeOrder(@RequestHeader(name = "Authorization") String token) {
         User user = userService.getUserByToken(token);
         orderService.placeOrder(user);

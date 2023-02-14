@@ -26,6 +26,7 @@ public class ShipmentController {
 
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<List<Shipment>> getAllShipments() {
         List<Shipment> shipments = shipmentService.allShipments();
         return new ResponseEntity<>(shipments, HttpStatus.OK);

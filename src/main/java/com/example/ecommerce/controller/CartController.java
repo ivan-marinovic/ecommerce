@@ -24,6 +24,7 @@ public class CartController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<ApiResponse> addToCart(@RequestBody AddToCartDto addToCartDto, @RequestHeader(name = "Authorization") String token) {
         User user = userService.getUserByToken(token);
         cartService.addToCart(addToCartDto, user);
@@ -31,6 +32,7 @@ public class CartController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<ApiResponse> getCartItems(@RequestHeader(name = "Authorization") String token) {
         User user = userService.getUserByToken(token);
         CartDto cartDto = cartService.listCartItems(user);
@@ -38,6 +40,7 @@ public class CartController {
     }
 
     @DeleteMapping("/{cartItemId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable("cartItemId") Long itemId, @RequestHeader(name = "Authorization") String token) {
         User user = userService.getUserByToken(token);
         cartService.deleteCartItem(itemId, user);
