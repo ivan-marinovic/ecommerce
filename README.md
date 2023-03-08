@@ -6,6 +6,7 @@
 ## Technologies
 Project is created with:
 * Spring Boot
-* SpringJpa and Hibernate
+* Maven
+* Spring Data Jpa and Hibernate
 * Spring Security JWT
 * MySql
