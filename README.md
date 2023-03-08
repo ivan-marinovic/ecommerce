@@ -2,6 +2,7 @@
 
 ## General description
 * Ecommerce backend project - Rest Api
+* products,categories,cart,wishlist,orders,users(role-based)
 	
 ## Technologies
 Project is created with:
